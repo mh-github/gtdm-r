@@ -66,9 +66,8 @@ class KClusterer
         header = lines[0].split(",")
         @cols = header.length
         @data = []
-        0.upto header.length-1 do |i|
-            @data << []
-        end
+        0.upto(header.length-1) {|i| @data << []}
+
         # we are storing the data by column.
         # For example, @data[0] is the data from column 0.
         # @data[0][10] is the column 0 value of item 10.
@@ -87,27 +86,22 @@ class KClusterer
                     
         @datasize = @data[1].length
         @memberOf = []
-        0.upto @data[1].length-1 do |x| 
-            @memberOf << -1
-        end
+        0.upto(@data[1].length-1) {|x| @memberOf << -1}
+
         #
         # now normalize number columns
         #
-        1.upto @cols-1 do |i|
-            @data[i] = normalizeColumn(@data[i])
-        end
+        1.upto(@cols-1) {|i| @data[i] = normalizeColumn(@data[i])}
+
         # select random centroids from existing points
         srand
         @centroids = []
         tmpRangeArr = []
-        0.upto @data[0].length - 1 do |i|
-            tmpRangeArr << i
-        end
+        0.upto(@data[0].length - 1) {|i| tmpRangeArr << i}
+
         tmpRangeArr.sample(@k).each do |r|
             tmp = []
-            1.upto @data.length-1 do |i| 
-                tmp << @data[i][r]
-            end
+            1.upto(@data.length-1) {|i| tmp << @data[i][r]}
             @centroids << tmp
         end
         assignPointsToCluster()
@@ -119,9 +113,7 @@ class KClusterer
         (mean point) of each cluster
 =end    
         members = []
-        0.upto @centroids.length-1 do |i|
-            members << @memberOf.count(i)
-        end
+        0.upto(@centroids.length-1) {|i| members << @memberOf.count(i)}
         tmpCentroids = []
         0.upto @centroids.length-1 do |centroid|
             tmpCentroid = []
@@ -164,18 +156,14 @@ class KClusterer
         @pointsChanged = 0
         @sse = 0
         tmpArr = []
-        0.upto @data[1].length-1 do |i|
-            tmpArr << assignPointToCluster(i)
-        end
+        0.upto(@data[1].length-1) {|i| tmpArr << assignPointToCluster(i)}
         @memberOf = tmpArr
     end
         
     def euclideanDistance(i, j)
         # compute distance of point i from centroid j
         sumSquares = 0
-        1.upto @cols-1 do |k|
-            sumSquares += (@data[k][i] - @centroids[j][k-1])**2
-        end
+        1.upto(@cols-1) {|k| sumSquares += (@data[k][i] - @centroids[j][k-1])**2}
         return Math.sqrt(sumSquares)
     end
 

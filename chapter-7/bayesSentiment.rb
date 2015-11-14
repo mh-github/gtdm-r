@@ -54,10 +54,8 @@ include MH_util
         
         # now compute probabilities
         vocabLength = @vocabulary.length
-        # puts "Computing probabilities:"
 
         @categories.each do |category|
-            # print '    ' + category + "\n"
             denominator = @totals[category] + vocabLength
             @vocabulary.keys.each do |word|
                 if @prob[category].has_key? word
@@ -85,7 +83,6 @@ include MH_util
                 currentBucket = trainingdir + category + "/" + directory
                 files = []
                 Dir.foreach(currentBucket) {|x| files << x if x != "." && x != ".."}
-                #print("   " + currentBucket)
                 files.each do |file|
                     f = File.open(currentBucket + "/" + file, "r:iso8859-1")
                     f.each_line do |line|
@@ -121,7 +118,6 @@ include MH_util
         f.each_line do |line|
             tokens = line.split
             tokens.each do |token|
-                #print(token)
                 token = my_strip(token, '\'".,?:-')
                 token = token.downcase
                 if @vocabulary.has_key? token
@@ -155,8 +151,6 @@ include MH_util
             result = classify(directory + file)
             results[result] = 0 if not results.has_key? result
             results[result] += 1
-            #if result == category:
-            #               correct += 1
         end
         return results
     end
@@ -176,7 +170,6 @@ include MH_util
         correct = 0
         total = 0
         categories.each do |category|
-            #print(".", end="")
             results[category] = testCategory(testdir + category + '/', category, bucketNumber)
         end
         return results
@@ -189,16 +182,11 @@ def tenfold(dataPrefix, stoplist)
     0.upto 9 do |i|
         bT = BayesText.new(dataPrefix, stoplist, i)
         r = bT.test(@theDir, i)
-        ## for (key, value) in r.items():
         r.each do |key, value|
-            ## results.setdefault(key, {})
             results[key] = {} if not results.has_key? key
-            ## for (ckey, cvalue) in value.items():
             value.each do |ckey, cvalue|
-                ## results[key].setdefault(ckey, 0)
                 results[key][ckey] = 0 if not results[key].has_key? ckey
                 results[key][ckey] += cvalue
-                ## categories = list(results.keys())
                 categories = results.keys
             end
         end
@@ -217,9 +205,7 @@ def tenfold(dataPrefix, stoplist)
     correct = 0.0
     categories.each do |category|
         row = " %s    |" % category 
-        ## for c2 in categories:
         categories.each do |c2|
-            ## if c2 in results[category]:
             if results[category].has_key? c2
                 count = results[category][c2]
             else

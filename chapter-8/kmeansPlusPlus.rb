@@ -67,9 +67,8 @@ class KClusterer
         header = lines[0].split(",")
         @cols = header.length
         @data = []
-        0.upto header.length-1 do |i| 
-            @data << []
-        end
+        0.upto(header.length-1) {|i| @data << []}
+
         # we are storing the data by column.
         # For example, self.data[0] is the data from column 0.
         # self.data[0][10] is the column 0 value of item 10.
@@ -88,15 +87,12 @@ class KClusterer
                     
         @datasize = @data[1].length
         @memberOf = []
-        0.upto @data[1].length-1 do |x|
-            @memberOf << -1
-        end
+        0.upto(@data[1].length-1) {|x| @memberOf << -1}
+
         #
         # now normalize number columns
         #
-        1.upto @cols-1 do |i|
-            @data[i] = normalizeColumn(@data[i])
-        end
+        1.upto(@cols-1) {|i| @data[i] = normalizeColumn(@data[i])}
         
         # select random centroids from existing points
         srand
@@ -105,9 +101,7 @@ class KClusterer
     end
 
     def showData
-        0.upto @data[0].length-1 do |i| 
-            print "%20s   %8.4f  %8.4f\n" % [@data[0][i], @data[1][i], @data[2][i]]
-        end
+        0.upto(@data[0].length-1) {|i| print "%20s   %8.4f  %8.4f\n" % [@data[0][i], @data[1][i], @data[2][i]]}
     end
     
     def distanceToClosestCentroid(point, centroidList)
@@ -137,9 +131,8 @@ class KClusterer
             # for every point in the data find its distance to
             # the closest centroid
             weights = []
-            0.upto @data[0].length-1 do |x|
-                weights << distanceToClosestCentroid(x, centroids)
-            end
+            0.upto(@data[0].length-1) {|x| weights << distanceToClosestCentroid(x, centroids)}
+
             ## total = sum(weights)
             total = weights.inject(:+)
             # instead of raw distances, convert so sum of weight = 1
@@ -160,9 +153,7 @@ class KClusterer
         @centroids = []
         centroids.each do |r|
             tmpArr = []
-            1.upto @data.length-1 do |i|
-                tmpArr << @data[i][r]
-            end
+            1.upto(@data.length-1) {|i| tmpArr << @data[i][r]}
             @centroids << tmpArr
         end
     end
@@ -173,9 +164,7 @@ class KClusterer
         (mean point) of each cluster
 =end
         members = []
-        0.upto @centroids.length-1 do |i|
-            members << @memberOf.count(i)
-        end
+        0.upto(@centroids.length-1) {|i| members << @memberOf.count(i)}
         
         tmpCentroids = []
         0.upto @centroids.length-1 do |centroid|
@@ -219,9 +208,7 @@ class KClusterer
         @pointsChanged = 0
         @sse = 0
         tmpArr = []
-        0.upto @data[1].length-1 do |i|
-            tmpArr << assignPointToCluster(i)
-        end
+        0.upto(@data[1].length-1) {|i| tmpArr << assignPointToCluster(i)}
         @memberOf = tmpArr
     end
         
@@ -229,18 +216,16 @@ class KClusterer
     def eDistance(i, j)
         # compute distance of point i from centroid j
         sumSquares = 0
-        1.upto @cols-1 do |k|
-            sumSquares += (@data[k][i] - @data[k][j])**2
-        end
+        1.upto(@cols-1) {|k| sumSquares += (@data[k][i] - @data[k][j])**2}
+
         return Math.sqrt(sumSquares)
     end
       
     def euclideanDistance(i, j)
         # compute distance of point i from centroid j
         sumSquares = 0
-        1.upto @cols-1 do |k|
-            sumSquares += (@data[k][i] - @centroids[j][k-1])**2
-        end
+        1.upto(@cols-1) {|k| sumSquares += (@data[k][i] - @centroids[j][k-1])**2}
+
         return Math.sqrt(sumSquares)
     end
 

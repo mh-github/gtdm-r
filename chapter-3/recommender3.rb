@@ -112,9 +112,7 @@ class Recommender
       # show top n items for user
       items = @data[user].to_a
       items.sort_by! {|element| -element[1]} 
-      0.upto n-1 do |i|
-         print "%s\t%i\n" % [convertProductID2name(items[i][0]), items[i][1]]
-      end
+      0.upto(n-1) {|i| print "%s\t%i\n" % [convertProductID2name(items[i][0]), items[i][1]]}
    end
             
    def loadMovieLens(path='')
@@ -384,9 +382,8 @@ class Recommender
        #
        # determine the total distance
        totalDistance = 0.0
-       0.upto @k-1 do |i|
-          totalDistance += nearest[i].second
-       end
+       0.upto(@k-1) {|i| totalDistance += nearest[i].second}
+
       # now iterate through the k nearest neighbors
       # accumulating their ratings
        0.upto @k-1 do |i|

@@ -57,9 +57,7 @@ class HClusterer
         end
 
         # now normalize number columns (that is, skip the first column)
-        1.upto @cols-1 do |i|
-            @data[i] = normalizeColumn(@data[i])
-        end
+        1.upto(@cols-1) {|i| @data[i] = normalizeColumn(@data[i])}
 
         ###
         ###  I have read in the data and normalized the 
@@ -114,9 +112,7 @@ class HClusterer
     
     def distance(i, j)
         sumSquares = 0
-        1.upto @cols-1 do |k|
-            sumSquares += (@data[k][i] - @data[k][j])**2
-        end
+        1.upto(@cols-1) {|k| sumSquares += (@data[k][i] - @data[k][j])**2}
         return Math.sqrt(sumSquares)
     end
             

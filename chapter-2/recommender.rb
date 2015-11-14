@@ -224,9 +224,8 @@ class Recommender
        #
        # determine the total distance
        totalDistance = 0.0
-       0.upto @k-1 do |i|
-          totalDistance += nearest[i].second
-       end
+       0.upto(@k-1) {|i| totalDistance += nearest[i].second}
+
        # now iterate through the k nearest neighbors
        # accumulating their ratings
        0.upto @k-1 do |i|

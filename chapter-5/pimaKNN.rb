@@ -64,9 +64,7 @@ class Classifier
         # get length of instance vector
         @vlen = @data[0][1].length
         # now normalize the data
-        0.upto @vlen-1 do |i|
-            normalizeColumn(i)
-        end
+        0.upto(@vlen-1) {|i| normalizeColumn(i)}
     end
 
     ##################################################
